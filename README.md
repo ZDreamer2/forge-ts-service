@@ -2,19 +2,19 @@
 
 Opinionated development-tooling presets for TypeScript services using Node's native TypeScript support. MIT licensed. This is not a server framework and contains no service runtime code.
 
-**Status:** initial tooling baseline; not yet published to npm. Source: <https://github.com/zdreamer2/forge-ts-service>. Initial version: `0.1.0`; no promise of compatibility with arbitrary external services.
+Source: <https://github.com/ZDreamer2/forge-ts-service>. The initial `0.1.0` release is available on npm; `0.1.1` prepares the first trusted-publishing release without changing presets or toolchain versions. The `0.x` release line makes no promise of compatibility with arbitrary external services.
 
 ## Installation
 
 Use Node `>=24.18.1 <25`. The package declares exact tool peers: Biome `2.5.7`, TypeScript `7.0.2`, dependency-cruiser `18.2.0`, SWC `1.16.1`, and Node types `24.13.3`. npm and pnpm install required peers automatically by default and expose their binaries in the consumer. If peer auto-installation is disabled, install these exact versions explicitly. SWC is required: native TypeScript 7 cannot provide dependency-cruiser's classic compiler API.
 
-After publication:
+Install the initial published baseline:
 
 ```sh
 npm install --save-dev --save-exact @zdreamer/forge-ts-service@0.1.0
 ```
 
-Before publication, run `npm pack` here, then install the generated `.tgz` as a development dependency in a separate consumer. Do not use a sibling-source import or `npm link` as proof of packaging.
+For an unpublished revision, run `npm pack` here, then install the generated `.tgz` as a development dependency in a separate consumer. Do not use a sibling-source import or `npm link` as proof of packaging.
 
 pnpm users must explicitly allow SWC's lifecycle script in their installation's `pnpm-workspace.yaml`:
 
@@ -92,4 +92,4 @@ The checkout is an independent pnpm installation with its own lockfile, exact No
 
 Tests exercise every shared graph rule against deliberate violations, parser fidelity for type re-exports and legal nested surfaces, and Biome environment boundaries. The package test packs the exact publication artifact, checks its file allowlist, installs it in a temporary clean npm consumer, and verifies all three exports and local extension of the graph rules. **That test requires registry/network access**, installs pinned tool peers, disables dependency lifecycle scripts, and does not publish anything. The normal pnpm development installation allows SWC's postinstall explicitly.
 
-The tarball contains only presets, package metadata, this README and the license. Regression tests and deliberately invalid fixtures stay in the source repository. There are no package lifecycle release hooks or publishing credentials. GitHub Actions runs the checks and uploads an inspectable tarball; the manual `publish.yml` workflow defaults to a dry-run and supports npm trusted publishing with provenance after npm-side configuration. See [release operations](https://github.com/ZDreamer2/forge-ts-service/blob/main/docs/releasing.md) for the owner-operated initial publication, exact trusted-publisher fields and subsequent releases. npm bootstrap, trusted-publisher configuration and migration of existing consumers remain separate steps.
+The tarball contains only presets, package metadata, this README and the license. Regression tests and deliberately invalid fixtures stay in the source repository. There are no package lifecycle release hooks or publishing credentials. GitHub Actions runs the checks and uploads an inspectable tarball; the manual `publish.yml` workflow defaults to a dry-run and supports npm trusted publishing with provenance after npm-side configuration. See [release operations](https://github.com/ZDreamer2/forge-ts-service/blob/main/docs/releasing.md) for the owner-operated initial publication, exact trusted-publisher fields and subsequent releases. The `0.1.0` npm bootstrap is complete; trusted-publisher configuration and migration of existing consumers remain separate steps.

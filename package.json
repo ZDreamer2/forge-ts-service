@@ -1,6 +1,6 @@
 {
 	"name": "@zdreamer/forge-ts-service",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Opinionated lint, TypeScript and architecture presets for Forge TypeScript services",
 	"license": "MIT",
 	"type": "module",
