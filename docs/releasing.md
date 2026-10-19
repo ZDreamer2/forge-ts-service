@@ -4,7 +4,9 @@
 
 `ci.yml` checks pushes to `main`, pull requests and manual runs. It installs the frozen pnpm toolchain, runs the package gate (including a clean temporary npm consumer), and uploads the tarball plus `pack.json` as `npm-package-<commit SHA>` for 14 days. The default branch and GitHub-hosted runner are authoritative; local checkouts need no npm publishing credentials.
 
-`publish.yml` is manually dispatched **on `main`** with an exact `version` input. It calls that same verification workflow, downloads the artifact from its own run, checks its name/version/SHA-512 integrity, and dry-runs npm publication. It only publishes when the boolean `publish` input is explicitly true. Wrong versions and non-main refs fail before publication. No push, tag or pull request automatically publishes anything. Publication attempts are serialized without cancellation.
+`publish.yml` runs on pushes to `main`. It reads `package.json` and checks the public registry: existing versions skip release; an unpublished version calls that same verification workflow, downloads its own run's artifact, verifies name/version/SHA-512, dry-runs and publishes with provenance. Registry/network or malformed-response errors fail closed. Ordinary commits still run CI but release nothing unless the manifest version is unpublished. Versions are not bumped automatically; pushing/merging a version bump authorizes its release.
+
+Manual dispatch on `main` remains available with an exact `version` and `publish=false` by default. Only `publish=true` publishes in manual mode. Wrong versions and non-main refs fail before publication. Publication attempts are serialized without cancellation; tags and PRs do not publish.
 
 Actions are pinned to immutable commits. The verification job has only read access; `id-token: write` is limited to the release job. Checkout does not retain Git credentials. The release job installs no package dependencies and runs no package lifecycle scripts. No `NPM_TOKEN`, `NODE_AUTH_TOKEN`, GitHub environment or repository secret is required. The repository URL in `package.json` must continue to identify this public repository for npm provenance.
 
@@ -59,9 +61,8 @@ Reference: <https://docs.npmjs.com/trusted-publishers/>. npm does not validate t
 
 ## Subsequent releases
 
-1. Change `package.json` to the next unused version and update release-facing documentation as appropriate. Run checks and push/merge the reviewed changes to `main`.
-2. In GitHub Actions, select **Publish → Run workflow**, select `main`, enter that exact version and leave **Publish to npm** unchecked. Wait for all jobs to pass.
-3. Obtain publication approval, then run Publish again with the same version and the publish checkbox enabled. Only enable it once the npm trusted publisher is configured.
-4. Check the run, the new public npm version, its integrity and provenance. Verify installation from the registry in a fresh consumer. A successful dry-run alone does not finish a release.
+1. Change `package.json` to the next unused version and update release-facing documentation. Run checks and review before pushing/merging to `main`: that push automatically releases an unpublished version after verification.
+2. Watch the Publish workflow. If checks fail, fix the source and push again with the same unpublished version; no additional version bump is needed.
+3. Check the run, the public npm version, integrity and provenance. Verify installation from the registry in a fresh consumer. Manual dry-runs remain available but cannot pause or replace automatic publication of a version bump on `main`.
 
 If publishing reports that the version already exists, inspect the registry before retrying; do not blindly bump or rerun. Never remove or overwrite a published version to repair a workflow. If verification fails, fix the source/workflow and obtain a new successful verification run before publishing.
