@@ -6,7 +6,7 @@
 	"type": "module",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/zdreamer2/forge-ts-service.git"
+		"url": "git+https://github.com/ZDreamer2/forge-ts-service.git"
 	},
 	"publishConfig": {
 		"access": "public"
