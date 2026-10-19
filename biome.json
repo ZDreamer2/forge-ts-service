@@ -1,0 +1,12 @@
+{
+	"extends": ["./presets/biome-preset.json"],
+	"files": {
+		"includes": ["*.json", "presets/**", "tests/*.ts", "!tests/fixtures"]
+	},
+	"overrides": [
+		{
+			"includes": ["tests/package.test.ts"],
+			"linter": { "rules": { "style": { "noProcessEnv": "off" } } }
+		}
+	]
+}

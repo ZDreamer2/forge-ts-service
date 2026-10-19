@@ -1,0 +1,9 @@
+# This checkout is an independent installation, even when nested inside another workspace.
+packages: []
+minimumReleaseAge: 10080
+onlyBuiltDependencies: []
+allowBuilds:
+  # SWC loads dependency-cruiser's TypeScript parser through its platform binary.
+  "@swc/core": true
+# Portable default; nested checkouts may override this with --store-dir.
+storeDir: .cache/pnpm

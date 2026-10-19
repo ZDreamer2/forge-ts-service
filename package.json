@@ -1,0 +1,39 @@
+{
+	"name": "@zdreamer/forge-ts-service",
+	"version": "0.1.0",
+	"description": "Opinionated lint, TypeScript and architecture presets for Forge TypeScript services",
+	"license": "MIT",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/zdreamer2/forge-ts-service.git"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"presets/"
+	],
+	"exports": {
+		"./biome": "./presets/biome-preset.json",
+		"./tsconfig": "./presets/tsconfig.json",
+		"./dependency-cruiser": "./presets/dependency-cruiser.mjs"
+	},
+	"engines": {
+		"node": ">=24.18.1 <25"
+	},
+	"packageManager": "pnpm@11.15.1",
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"lint": "biome check .",
+		"test": "node --test",
+		"check": "tsc --noEmit && biome check . && node --test"
+	},
+	"peerDependencies": {
+		"@biomejs/biome": "2.5.7",
+		"@swc/core": "1.16.1",
+		"@types/node": "24.13.3",
+		"dependency-cruiser": "18.2.0",
+		"typescript": "7.0.2"
+	}
+}
